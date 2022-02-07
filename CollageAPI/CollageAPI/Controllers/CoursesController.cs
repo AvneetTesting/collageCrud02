@@ -18,12 +18,21 @@ namespace CollageAPI.Controllers
         {
             _context = context;
         }
+        /// <summary>
+        /// GetAll method is used for retreiving the list of courses 
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         public IActionResult GetAll()
         {
 
             return Ok(_context.Courses.ToList());
         }
+        /// <summary>
+        /// AddNew method is used for adding new course in database
+        /// </summary>
+        /// <param name="course"></param>
+        /// <returns></returns>
         [HttpPost]
         public IActionResult AddNew(Course course)
         {
@@ -31,6 +40,11 @@ namespace CollageAPI.Controllers
             _context.SaveChanges();
             return Ok("Added New");
         }
+        /// <summary>
+        /// Update method is used to update the existing course information
+        /// </summary>
+        /// <param name="course"></param>
+        /// <returns></returns>
         [HttpPatch]
         public IActionResult Update(Course course)
         {
@@ -38,6 +52,11 @@ namespace CollageAPI.Controllers
             _context.SaveChanges();
             return Ok("Update");
         }
+        /// <summary>
+        /// Delete method is used to delete any existing record
+        /// </summary>
+        /// <param name="courseId"></param>
+        /// <returns></returns>
         [HttpDelete]
         public IActionResult Delete(int courseId)
         {

@@ -20,6 +20,10 @@ namespace CollageAPI.Controllers
         {
             _context = context;
         }
+        /// <summary>
+        /// GetAll method is used to get the list of the Teachers
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         public IActionResult GetAll()
         {
@@ -28,6 +32,11 @@ namespace CollageAPI.Controllers
             return Ok(teacher);
             //_context.Teachers.ToList()
         }
+        /// <summary>
+        /// AddNew method is used to add new teacher in database
+        /// </summary>
+        /// <param name="teacher"></param>
+        /// <returns></returns>
         [HttpPost]
         public IActionResult AddNew(TeacherVM teacher)
         {
@@ -72,6 +81,11 @@ namespace CollageAPI.Controllers
             //_context.SaveChanges();
 
         }
+        /// <summary>
+        /// Update method will help to update the information of existing teacher in database
+        /// </summary>
+        /// <param name="teacher"></param>
+        /// <returns></returns>
         [HttpPatch]
         public IActionResult Update(TeacherUpdateVM teacher)
         {
@@ -81,7 +95,7 @@ namespace CollageAPI.Controllers
                 Name = teacher.name
             };
 
-            var abc = _context.Teachers.Update(teacherDetails);
+            _context.Teachers.Update(teacherDetails);
             _context.SaveChanges();
 
             
@@ -107,6 +121,11 @@ namespace CollageAPI.Controllers
             _context.SaveChanges();
             return Ok();
         }
+        /// <summary>
+        /// Delete method will help to delete the record of a teacher from record 
+        /// </summary>
+        /// <param name="teacherId"></param>
+        /// <returns></returns>
         [HttpDelete]
         public IActionResult Delete(int teacherId)
         {
@@ -133,6 +152,11 @@ namespace CollageAPI.Controllers
             //                }).ToList();
 
         }
+        /// <summary>
+        /// GetTeacherByName will help to get the information of a teacher by its name
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
         [HttpGet("GetTeacherByName")]
         public IActionResult GetTeacherByName(string name)
         {

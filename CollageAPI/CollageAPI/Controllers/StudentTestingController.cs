@@ -1,5 +1,6 @@
 ﻿using CollageAPI.Data;
 using CollageAPI.Models;
+using CollageAPI.Models.ViewModels;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -43,52 +44,39 @@ namespace CollageAPI.Controllers
             return Ok(studentDetail);
         }
         [HttpPost]
-        public IActionResult AddNew(StudentCourse student)
+        public IActionResult AddNew(StudentTestingAddNewVM student)
         {
-            //Teacher teacherDetails = new Teacher()
-            //{
-            //    Name = teacher.Teacher.Name
-            //};
-            //var abc = _context.Teachers.Add(teacherDetails);
-            //_context.SaveChanges();
-            //var teacherList = _context.Teachers.ToList();
-            //var tId = teacherList[teacherList.Count - 1].Id;
-
-
-
-            //TeacherCourse teacherCourse = new TeacherCourse()
-            //{
-            //    TeacherId = tId,
-            //    CourseId = teacher.CourseId
-            //};
-
-            //_context.TeacherCourses.Add(teacherCourse);
-
-            //_context.SaveChanges();
-            //return Ok("Added New");
-
-
-            Student studentDetails = new Student()
-            {
-                Name = student.Student.Name
+            Student studentDetails = new Student() 
+            { 
+                Name=student.name
             };
+
             _context.Students.Add(studentDetails);
-            _context.SaveChanges();
+            //_context.SaveChanges();
 
             var studentList = _context.Students.ToList();
             var tId = studentList[studentList.Count - 1].Id;
 
-
-            StudentCourse studentCourse = new StudentCourse()
+            foreach (var item in student.courseInfo)
             {
-                StudentId = tId,
-                CourseId = student.CourseId
-            };
+                StudentCourse studentCourse = new StudentCourse()
+                {
+                    StudentId = tId,
+                    CourseId = item.Id
+                };
+                _context.StudentCourses.Add(studentCourse);
+                //_context.SaveChanges();
+            }
+            //StudentCourse studentCourse = new StudentCourse()
+            //{
+            //    StudentId = tId,
+            //    CourseId = student.CourseId
+            //};
 
-            _context.StudentCourses.Add(studentCourse);
+            //_context.StudentCourses.Add(studentCourse);
 
-            _context.SaveChanges();
-            return Ok("Added New");
+            //_context.SaveChanges();
+            return Ok();
         }
         [HttpPatch]
         public IActionResult Update(Student student)
@@ -108,6 +96,63 @@ namespace CollageAPI.Controllers
             _context.SaveChanges();
             return Ok("Delete");
         }
+        private class GetStudentData
+        {
+            public int ID { get; set; }
+            public string name { get; set; }
+            public int stdCrsId { get; set; }
+            public string courseName { get; set; }
+            public string teacher { get; set; }
+        }
+
+        private class GetStudentDataTesting
+        {
+            public int Id { get; set; }
+            public string StudentName { get; set; }
+            public string StudentCourse { get; set; }
+            public string Teacher { get; set; }
+        }
+        [HttpGet("LinqPractise")]
+        public IActionResult LinqPractise()
+        {
+            var testObj = (from std in _context.Students
+                          join stdCrs in _context.StudentCourses
+                          on std.Id equals stdCrs.StudentId
+                          join stdTech in _context.TeacherCourses
+                          on stdCrs.CourseId equals stdTech.CourseId
+                          where std.Name=="Raman"
+                          select new GetStudentData {
+                          ID=std.Id,
+                          name=std.Name,
+                          stdCrsId=stdCrs.Id,
+                          courseName=stdCrs.Course.Name,
+                          teacher=stdTech.Teacher.Name
+                          }).ToList();
+
+            //var newTestObj =(from stdCrs in _context.StudentCourses
+            //                join techCrs in _context.TeacherCourses
+            //                on stdCrs.CourseId equals techCrs.CourseId
+            //                where stdCrs.StudentId==1
+            //                select new GetStudentData { 
+            //                }).ToList();
+
+            var newTestObj = (from std in _context.Students
+                              join stdCrs in _context.StudentCourses
+                              on std.Id equals stdCrs.StudentId
+                              join techCrs in _context.TeacherCourses
+                              on stdCrs.CourseId equals techCrs.CourseId
+                              join tech in _context.Teachers
+                              on techCrs.TeacherId equals tech.Id
+                              where std.Name=="Raman"
+                              select new GetStudentDataTesting { 
+                                  Id=std.Id,
+                                  StudentName=std.Name,
+                                  StudentCourse=stdCrs.Course.Name,
+                                  Teacher=tech.Name
+                              }).ToList();
+
+
+            return Ok(newTestObj);
+        }
     }
 }
-
