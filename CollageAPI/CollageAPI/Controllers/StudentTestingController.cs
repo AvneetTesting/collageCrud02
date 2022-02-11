@@ -13,7 +13,7 @@ namespace CollageAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class StudentTestingController : ControllerBase
+    public class StudentTestingController : Controller
     {
         private readonly ApplicationDbContext _context;
         public StudentTestingController(ApplicationDbContext context)
@@ -52,7 +52,7 @@ namespace CollageAPI.Controllers
             };
 
             _context.Students.Add(studentDetails);
-            //_context.SaveChanges();
+            _context.SaveChanges();
 
             var studentList = _context.Students.ToList();
             var tId = studentList[studentList.Count - 1].Id;
@@ -65,7 +65,7 @@ namespace CollageAPI.Controllers
                     CourseId = item.Id
                 };
                 _context.StudentCourses.Add(studentCourse);
-                //_context.SaveChanges();
+                _context.SaveChanges();
             }
             //StudentCourse studentCourse = new StudentCourse()
             //{
@@ -143,7 +143,6 @@ namespace CollageAPI.Controllers
                               on stdCrs.CourseId equals techCrs.CourseId
                               join tech in _context.Teachers
                               on techCrs.TeacherId equals tech.Id
-                              where std.Name=="Raman"
                               select new GetStudentDataTesting { 
                                   Id=std.Id,
                                   StudentName=std.Name,
@@ -151,8 +150,13 @@ namespace CollageAPI.Controllers
                                   Teacher=tech.Name
                               }).ToList();
 
-
             return Ok(newTestObj);
+        }
+        private class GetTeachersCourseList
+        {
+            public int Id { get; set; }
+            public string TeacherName { get; set; }
+            public string TeacherCourses { get; set; }
         }
     }
 }
