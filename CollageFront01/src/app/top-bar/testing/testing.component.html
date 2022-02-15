@@ -1,0 +1,98 @@
+<p>testing works!</p>
+
+<!-- Button trigger modal -->
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalLong">
+    New Student
+  </button>
+  <div class="text-center p-5">
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Name of the Student</th>
+          <th scope="col">Subjects</th>
+          <th scope="col">Action</th>
+        </tr>
+      </thead>
+      <tbody>
+
+        <tr *ngFor="let student of students; let i=index">
+          <th scope="row">{{i+1}}</th>
+          <td>{{student.student.name}}</td>
+          <td>{{student.course.name}}</td>
+          <td>
+            <div>
+  
+              <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#UpdateForm">Update</button> &nbsp;
+              <button type="button" class="btn btn-primary">Delete</button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  
+  <!-- Modal -->
+  <div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLongTitle">Add new Student</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+         <!-- Add new Student Form -->
+         
+            <div class="form-group">
+              <label for="exampleFormControlInput1">Student Name</label>
+              <input type="text" [(ngModel)]="newStudent.name" class="form-control" id="exampleFormControlInput1" placeholder="Enter Student name">
+            </div>
+            <!-- <multiselect ng-model="selection" options="options" selection-limit="2">
+              <option value="1">Hindi</option>
+            </multiselect> -->
+
+            <!-- <div class="form-group">
+              <label for="exampleFormControlSelect1">Example select</label>
+              <select class="form-control" id="exampleFormControlSelect1">
+                <option>1</option>
+                <option>2</option>
+                <option>3</option>
+                <option>4</option>
+                <option>5</option>
+              </select>
+            </div> -->
+
+            <div class="form-group">
+              <label for="exampleFormControlSelect2">Select Subjects</label>
+              <select multiple class="form-control" [(ngModel)]="newStudent.courseInfo" id="exampleFormControlSelect2">
+                <option *ngFor="let course of courses" [value]="course" >{{course.name}}</option>
+              </select>
+            </div>
+
+            <!-- <div class="form-group">
+              <label for="exampleFormControlTextarea1">Example textarea</label>
+              <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" disabled=true>  
+                {{newStudent.courseInfo|json}}
+                <p></p>
+               
+              </textarea>
+
+              {{newStudent.courseInfo|json}}
+              
+            </div> -->
+            <div>
+              <h3>Selected Courses</h3>
+              <p *ngFor="let item of newStudent.courseInfo">
+                <li>{{item.name}}</li>
+              </p>
+            </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="EmptyRec()">Close</button>
+          <button type="button" (click)="SaveClick()" class="btn btn-primary" data-dismiss="modal">Save changes</button>
+        </div>
+      </div>
+    </div>
+  </div>

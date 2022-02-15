@@ -1,0 +1,140 @@
+<!-- Button trigger modal -->
+<div class="form-row m-3">
+  <div class="col-10">
+    <h2>Teachers List</h2>
+  </div>
+  <div>
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
+    Add New Teacher
+  </button>
+  </div>
+</div>
+
+<!-- table -->
+<div class="text-center p-5">
+  <table class="table">
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Name of the Teacher</th>
+        <th scope="col">Subjects</th>
+        <th scope="col">Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- <li *ngFor="let item of items; let i = index" [attr.data-index]="i"></li> -->
+      <tr *ngFor="let teacher of teachers; let i=index">
+        <th scope="row">{{i+1}}</th>
+        <td>{{teacher.teacher.name}}</td>
+        <td>{{teacher.course.name}}</td>
+        <td>
+          <div>
+
+            <button type="button" (click)="EditTeacher(teacher)" class="btn btn-secondary" data-toggle="modal" data-target="#UpdateForm">Update</button> &nbsp;
+            <button type="button" (click)=deleteTeacher(teacher.teacher.id) class="btn btn-primary">Delete</button>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- Add new Form -->
+<!-- Modal -->
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Add Teacher</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+
+      <div class="modal-body">
+        <!-- form Add New -->
+        <form #AddTeacherForm="ngForm" >
+          <div class="form-group">
+            <label for="exampleInputEmail1">Teachers' Name</label>
+            <input type="text" ngModel name="TeacherName" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter name">
+            <small id="emailHelp" class="form-text text-muted">Please enter full Name</small>
+          </div>
+          <!-- <div class="form-group">
+            <label for="exampleInputPassword1">Subject</label>
+            <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Choose Subject">
+          </div> -->
+          <div class="form-group">
+            <label for="Subject">Subject</label>
+            <select ngModel name="CourseId" class="form-control">
+              <option value="">Select Subject</option>
+              <option *ngFor="let course of courses; let i=index" [value]="course.id" >{{course.name}}</option>
+            </select>
+          </div>
+          <!-- <div class="form-check">
+            <input type="checkbox" class="form-check-input" id="exampleCheck1">
+            <label class="form-check-label" for="exampleCheck1">Check me out</label>
+          </div> -->
+          <!-- <button type="submit" class="btn btn-primary">Submit</button> -->
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary" (click)="NewTeacher(AddTeacherForm.value)" data-dismiss="modal">Save changes</button>
+          </div>
+        </form>
+      </div>
+      
+      <!-- <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div> -->
+    </div>
+  </div>
+</div>
+
+<!-- Update Form -->
+<!-- Modal -->
+<div class="modal fade" id="UpdateForm" tabindex="-1" role="dialog" aria-labelledby="UpdateFormTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="UpdateFormTitle">Update Teacher's Details</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+
+      <div class="modal-body">
+        <!-- form Update-->
+        <!-- <form [formGroup]="teacherDetails" (ngSubmit)="NewTeacher(UpdateTeacherForm.value)"> -->
+        <form #updateTeacherForm [formGroup]="teacherDetails">
+          <div class="form-group">
+            <input type="hidden" formcontrolName="id">
+            <label for="exampleInputEmail1">Teachers' Name</label>
+            <input type="text" formControlName="name" class="form-control" aria-describedby="emailHelp" placeholder="Enter name">
+            <small id="emailHelp" class="form-text text-muted">Please enter full Name</small>
+          </div>
+          <div class="form-group">
+            <label for="Subject">Subject</label>
+            <select formControlName="courseId" class="form-control">
+              <option value="">Select Subject</option>
+              <option *ngFor="let course of courses; let i=index" [value]="course.id" >{{course.name}}</option>
+            </select>
+          </div>
+          <!-- <div class="form-check">
+            <input type="checkbox" class="form-check-input" id="exampleCheck1">
+            <label class="form-check-label" for="exampleCheck1">Check me out</label>
+          </div> -->
+          <!-- <button type="submit" class="btn btn-primary">Submit</button> -->
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary" (click)="UpdateTeacher()" data-dismiss="modal">Save changes</button>
+          </div>
+        </form>
+      </div>
+      
+      <!-- <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div> -->
+    </div>
+  </div>
+</div>
