@@ -1,7 +1,6 @@
 ﻿using CollageAPI.Data;
 using CollageAPI.Models;
 using CollageAPI.Models.ViewModels;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -14,7 +13,6 @@ namespace CollageAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
     public class TeachersController : ControllerBase
     {
         private readonly ApplicationDbContext _context;

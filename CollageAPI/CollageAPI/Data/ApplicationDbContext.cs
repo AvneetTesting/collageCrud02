@@ -17,7 +17,6 @@ namespace CollageAPI.Data
         public DbSet<Teacher> Teachers{ get; set; }
         public DbSet<StudentCourse> StudentCourses { get; set; }
         public DbSet<TeacherCourse> TeacherCourses { get; set; }
-        public DbSet<Users> Users { get; set; }
 
     }
 }
