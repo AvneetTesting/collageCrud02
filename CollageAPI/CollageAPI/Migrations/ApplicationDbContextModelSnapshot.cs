@@ -107,6 +107,24 @@ namespace CollageAPI.Migrations
                     b.ToTable("TeacherCourses");
                 });
 
+            modelBuilder.Entity("CollageAPI.Models.Users", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Password")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Users");
+                });
+
             modelBuilder.Entity("CollageAPI.Models.StudentCourse", b =>
                 {
                     b.HasOne("CollageAPI.Models.Course", "Course")
