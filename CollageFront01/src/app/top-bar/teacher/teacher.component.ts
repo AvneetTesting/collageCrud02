@@ -16,6 +16,7 @@ export class TeacherComponent implements OnInit {
     courseId:new FormControl(),
     id:new FormControl(),
     teacherId:new FormControl(),
+    
 
   });
   UpTeacher:any
