@@ -12,6 +12,8 @@ loginDetails=new FormGroup({
       UserName:new FormControl(),
       Password:new FormControl()
 });
+userCred:any;
+
   constructor(private collegeService:CollegeService) { }
 
   ngOnInit(): void {
@@ -23,7 +25,7 @@ loginDetails=new FormGroup({
 this.collegeService.login(this.loginDetails.value).subscribe(
   (response)=>{
     console.warn("response",response);
-    
+    this.userCred=response
   },
   (error)=>{
     console.warn("error",error);

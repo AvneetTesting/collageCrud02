@@ -1,11 +1,13 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient,HttpHeaders } from '@angular/common/http';
 import { map } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CollegeService {
+
+  // currentUserName:any="";
 
   constructor(private httpclient:HttpClient) { }
 
@@ -18,7 +20,18 @@ GetAllCourses(){
 // teachers
 GetAllTeachers(){
   // debugger
-  return this.httpclient.get("https://localhost:44397/api/Teachers")
+     //JWT
+   var currentUser={token:""};
+   var headers=new HttpHeaders();
+   headers=headers.set("Authorization","Bearer "); 
+   var currentUserSession=sessionStorage.getItem("currentUser");
+   if(currentUserSession != null)
+   {
+     currentUser=JSON.parse(currentUserSession);
+     headers=headers.set("Authorization","Bearer " +currentUser.token);    
+   }
+
+  return this.httpclient.get("https://localhost:44397/api/Teachers",{headers:headers})
   
 }
 
@@ -67,6 +80,19 @@ login(loginDetails:any)
 {
   debugger
   return this.httpclient.post("https://localhost:44397/api/Users/Login",loginDetails)
+  .pipe(map(u=>{
+    if(u)
+    {
+      //  this.currentUserName=u.username;
+       sessionStorage['currentUser']=JSON.stringify(u);
+    }
+    return u;
+  }))
+}
+
+Authoriz()
+{
+  // return this.httpclient.post("https://localhost:44397/api/Users/Login")
 }
 
 
