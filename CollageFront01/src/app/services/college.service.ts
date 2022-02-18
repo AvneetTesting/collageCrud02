@@ -63,4 +63,11 @@ SaveNewStudentTesting(data:any)
   return this.httpclient.post("https://localhost:44397/api/StudentTesting",data)
 }
 
+login(loginDetails:any)
+{
+  debugger
+  return this.httpclient.post("https://localhost:44397/api/Users/Login",loginDetails)
+}
+
+
 }
