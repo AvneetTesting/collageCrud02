@@ -1,4 +1,4 @@
-﻿using CollageAPI.Data;
+﻿using CollageAPI.Identity;
 using CollageAPI.Models;
 using CollageAPI.Models.ViewModels;
 using Microsoft.AspNetCore.Authorization;
@@ -19,12 +19,11 @@ namespace CollageAPI.Controllers
     [Authorize]
     public class TeachersController : ControllerBase
     {
-        private readonly ApplicationDbContext _context;
-        private readonly HttpContext _httpContext;
-        public TeachersController(ApplicationDbContext context, HttpContext httpContext)
+        private readonly IdentityApplicationDbContext _context;
+        public TeachersController(IdentityApplicationDbContext context)
         {
             _context = context;
-            _httpContext = httpContext;
+
         }
         /// <summary>
         /// GetAll method is used to get the list of the Teachers

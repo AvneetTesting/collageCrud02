@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace CollageAPI.Identity
 {
-    public class ApplicationRoleStore: RoleStore<ApplicationRole, ApplicationDbContext>
+    public class ApplicationRoleStore: RoleStore<ApplicationRole, IdentityApplicationDbContext>
     {
-        public ApplicationRoleStore(ApplicationDbContext context, IdentityErrorDescriber errorDescriber) : base(context, errorDescriber)
+        public ApplicationRoleStore(IdentityApplicationDbContext context, IdentityErrorDescriber errorDescriber) : base(context, errorDescriber)
         {
 
         }

@@ -1,4 +1,4 @@
-﻿using CollageAPI.Data;
+﻿using CollageAPI.Identity;
 using CollageAPI.Models;
 using CollageAPI.Models.ViewModels;
 using Microsoft.AspNetCore.Http;
@@ -15,8 +15,8 @@ namespace CollageAPI.Controllers
     [ApiController]
     public class StudentsController : ControllerBase
     {
-        private readonly ApplicationDbContext _context;
-        public StudentsController(ApplicationDbContext context)
+        private readonly IdentityApplicationDbContext _context;
+        public StudentsController(IdentityApplicationDbContext context)
         {
             _context = context;
         }

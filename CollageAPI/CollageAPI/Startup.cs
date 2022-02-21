@@ -1,4 +1,4 @@
-using CollageAPI.Data;
+using CollageAPI.Identity;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -46,8 +46,14 @@ namespace CollageAPI
                 }
                 );
             });
+
+            services.AddEntityFrameworkSqlServer().AddDbContext<IdentityApplicationDbContext>(option =>
+option.UseSqlServer(Configuration.GetConnectionString("conStr"),
+b => b.MigrationsAssembly("CollageAPI")));
+
             services.AddControllers();
-            services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("CollegeDB")));
+            //services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("CollegeDB")));
+            
             services.AddTransient<IConfigureOptions<SwaggerGenOptions>, ConfigureSwaggerOptions>();
             services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 

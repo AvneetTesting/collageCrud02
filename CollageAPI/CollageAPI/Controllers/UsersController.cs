@@ -1,4 +1,4 @@
-﻿using CollageAPI.Data;
+﻿using CollageAPI.Identity;
 using CollageAPI.Models.ViewModels;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -18,9 +18,9 @@ namespace CollageAPI.Controllers
     [ApiController]
     public class UsersController : Controller
     {
-        private readonly ApplicationDbContext _context;
+        private readonly IdentityApplicationDbContext _context;
         private readonly AppSettings _appSettings;
-        public UsersController(ApplicationDbContext context,IOptions<AppSettings> appSettings)
+        public UsersController(IdentityApplicationDbContext context,IOptions<AppSettings> appSettings)
         {
             _context = context;
             _appSettings = appSettings.Value;
