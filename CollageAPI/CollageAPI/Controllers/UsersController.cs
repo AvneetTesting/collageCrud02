@@ -46,6 +46,8 @@ namespace CollageAPI.Controllers
             var token = tokenHandler.CreateToken(tokenDescritor);
             user.Token=tokenHandler.WriteToken(token);
             user.Password = "";
+
+
             return Ok(user);
 
         }

@@ -85,6 +85,8 @@ login(loginDetails:any)
     {
       //  this.currentUserName=u.username;
        sessionStorage['currentUser']=JSON.stringify(u);
+       console.log(sessionStorage.getItem("currentUser"));
+       
     }
     return u;
   }))

@@ -5,9 +5,11 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace CollageAPI.Controllers
@@ -18,9 +20,11 @@ namespace CollageAPI.Controllers
     public class TeachersController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
-        public TeachersController(ApplicationDbContext context)
+        private readonly HttpContext _httpContext;
+        public TeachersController(ApplicationDbContext context, HttpContext httpContext)
         {
             _context = context;
+            _httpContext = httpContext;
         }
         /// <summary>
         /// GetAll method is used to get the list of the Teachers
@@ -29,6 +33,11 @@ namespace CollageAPI.Controllers
         [HttpGet]
         public IActionResult GetAll()
         {
+            //headers
+            //string authHeader = _httpContext.Request.Headers["Authorization"];
+
+
+
             var teacher = _context.TeacherCourses.Include(c => c.Course).Include(t => t.Teacher).OrderBy(t=>t.Teacher.Id).ToList();
             //_context.Teachers.Include("course").ToList();
             return Ok(teacher);

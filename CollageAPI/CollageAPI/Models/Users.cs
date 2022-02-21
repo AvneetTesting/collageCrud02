@@ -13,5 +13,6 @@ namespace CollageAPI.Models
         public string Password { get; set; }
         [NotMapped]
         public string Token { get; set; }
+        public string Roles { get; set; }
     }
 }
