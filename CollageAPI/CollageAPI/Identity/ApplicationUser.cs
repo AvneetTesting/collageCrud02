@@ -13,5 +13,7 @@ namespace CollageAPI.Identity
         public string Token { get; set; }
         [NotMapped]
         public string Role { get; set; }
+        public string Password { get; set; }
+
     }
 }

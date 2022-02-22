@@ -129,3 +129,4 @@ D:\Tasks\CollageAPI\CollageAPI\obj\Debug\net5.0\CollageAPI.dll
 D:\Tasks\CollageAPI\CollageAPI\obj\Debug\net5.0\ref\CollageAPI.dll
 D:\Tasks\CollageAPI\CollageAPI\obj\Debug\net5.0\CollageAPI.pdb
 D:\Tasks\CollageAPI\CollageAPI\obj\Debug\net5.0\CollageAPI.genruntimeconfig.cache
+D:\Tasks\CollageAPI\CollageAPI\obj\Debug\net5.0\CollageAPI.csproj.AssemblyReference.cache

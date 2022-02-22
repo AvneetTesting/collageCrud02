@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -46,6 +47,27 @@ namespace CollageAPI
                 }
                 );
             });
+
+            services.AddTransient<IRoleStore<ApplicationRole>, ApplicationRoleStore>();
+            services.AddTransient<UserManager<ApplicationUser>, ApplicationUserManager>();
+            services.AddTransient<SignInManager<ApplicationUser>, ApplicationSignInManager>();
+            services.AddTransient<RoleManager<ApplicationRole>, ApplicationRoleManager>();
+            services.AddTransient<IUserStore<ApplicationUser>, ApplicationUserStore>();
+            services.AddIdentity<ApplicationUser, ApplicationRole>()
+            .AddEntityFrameworkStores<IdentityApplicationDbContext>()
+            .AddUserStore<ApplicationUserStore>()
+            .AddUserManager<ApplicationUserManager>()
+            .AddRoleManager<ApplicationRoleManager>()
+            .AddSignInManager<ApplicationSignInManager>()
+            .AddRoleStore<ApplicationRoleStore>()
+            .AddDefaultTokenProviders();
+
+
+            services.AddScoped<ApplicationRoleStore>();
+            services.AddScoped<ApplicationUserStore>();
+
+
+
 
             services.AddEntityFrameworkSqlServer().AddDbContext<IdentityApplicationDbContext>(option =>
 option.UseSqlServer(Configuration.GetConnectionString("conStr"),
@@ -91,7 +113,7 @@ b => b.MigrationsAssembly("CollageAPI")));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public async void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
             {
@@ -106,6 +128,66 @@ b => b.MigrationsAssembly("CollageAPI")));
             app.UseCors("MyPolicy");
 
             app.UseAuthorization();
+
+            //IServiceScopeFactory serviceScopeFactory = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>();
+            //using (IServiceScope scope = serviceScopeFactory.CreateScope())
+            //{
+            //    var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<ApplicationRole>>();
+            //    var userManager = scope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
+            //    //Create Admin Role
+            //    if (!await roleManager.RoleExistsAsync("Admin"))
+            //    {
+            //        var role = new ApplicationRole();
+            //        role.Name = "Admin";
+            //        await roleManager.CreateAsync(role);
+            //    }
+
+
+            //    //Create Employee Role
+            //    if (!await roleManager.RoleExistsAsync("Employee"))
+            //    {
+            //        var role = new ApplicationRole();
+            //        role.Name = "Employee";
+            //        await roleManager.CreateAsync(role);
+            //    }
+
+
+            //    //Create Admin User
+
+            //    if (await userManager.FindByNameAsync("admin") == null)
+            //    {
+            //        var user = new ApplicationUser();
+            //        user.UserName = "admin";
+            //        user.Email = "admin@gmail.com";
+            //        var Password = "Admin@123";
+            //        var chkuser = await userManager.CreateAsync(user, Password);
+            //        if (chkuser.Succeeded)
+            //        {
+            //            await userManager.AddToRoleAsync(user, "Admin");
+            //        }
+            //    }
+
+            //    //Create Employee User
+
+            //    if (await userManager.FindByNameAsync("employee") == null)
+            //    {
+            //        var user = new ApplicationUser();
+            //        user.UserName = "employee";
+            //        user.Email = "employee@gmail.com";
+            //        var Password = "Admin@123";
+            //        var chkuser = await userManager.CreateAsync(user, Password);
+            //        if (chkuser.Succeeded)
+            //        {
+            //            await userManager.AddToRoleAsync(user, "Employee");
+            //        }
+            //    }
+            //}
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllerRoute(
+                    name: "default",
+                    pattern: "{controller=Home}/{action=Index}/{id?}");
+            });
 
             app.UseEndpoints(endpoints =>
             {

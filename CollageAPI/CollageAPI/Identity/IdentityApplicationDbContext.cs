@@ -19,7 +19,6 @@ namespace CollageAPI.Identity
         public DbSet<Teacher> Teachers { get; set; }
         public DbSet<StudentCourse> StudentCourses { get; set; }
         public DbSet<TeacherCourse> TeacherCourses { get; set; }
-        public DbSet<Users> Users { get; set; }
         public DbSet<ApplicationRole> ApplicationRoles { get; set; }
         protected override void OnModelCreating(ModelBuilder builder)
         {

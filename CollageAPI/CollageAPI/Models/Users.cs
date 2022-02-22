@@ -8,13 +8,12 @@ using System.Threading.Tasks;
 
 namespace CollageAPI.Models
 {
-    public class Users: IdentityUser
+    public class Users: ApplicationUser
     {
-        public int Id { get; set; }
-        public string UserName { get; set; }
-        public string Password { get; set; }
         [NotMapped]
         public string Token { get; set; }
+        [NotMapped]
         public string Roles { get; set; }
+
     }
 }
