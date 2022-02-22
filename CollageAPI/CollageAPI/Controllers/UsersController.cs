@@ -20,35 +20,76 @@ namespace CollageAPI.Controllers
     {
         private readonly IdentityApplicationDbContext _context;
         private readonly AppSettings _appSettings;
-        public UsersController(IdentityApplicationDbContext context,IOptions<AppSettings> appSettings)
+        private readonly ApplicationUserManager _applicationUserManager;
+        private readonly ApplicationSignInManager _applicationSignInManager;
+        private readonly AppSettings _appSetting;
+        public UsersController(IdentityApplicationDbContext context,IOptions<AppSettings> appSettings, 
+            ApplicationUserManager applicationUserManager, ApplicationSignInManager applicationSignInManager)
         {
             _context = context;
+            _applicationUserManager = applicationUserManager;
+            _applicationSignInManager = applicationSignInManager;
             _appSettings = appSettings.Value;
         }
         [HttpPost("Login")]
-        public IActionResult Login(LoginVM loginVM)
+        public async Task<ApplicationUser> Login(LoginVM loginVM)
         {
-            var user = _context.Users.FirstOrDefault(u => u.UserName == loginVM.UserName && u.Password == loginVM.Password);
-            if (user == null)
-                return null;
-            var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.ASCII.GetBytes(_appSettings.Secret);
-            var tokenDescritor = new SecurityTokenDescriptor()
+
+            var result = await _applicationSignInManager.PasswordSignInAsync(loginVM.UserName, loginVM.Password, false, false);
+            if (result.Succeeded)
             {
-                Subject = new ClaimsIdentity(new Claim[]
+                var applicationUser = await _applicationUserManager.FindByNameAsync(loginVM.UserName);
+                applicationUser.PasswordHash = null;
+                //  JWT Token
+                if (await _applicationUserManager.IsInRoleAsync(applicationUser, SD.Role_Admin))
+                    applicationUser.Role = SD.Role_Admin;
+                if (await _applicationUserManager.IsInRoleAsync(applicationUser, SD.Role_Employee))
+                    applicationUser.Role = SD.Role_Employee;
+
+                var tokenHandler = new JwtSecurityTokenHandler();
+                var key = System.Text.Encoding.ASCII.GetBytes(_appSettings.Secret);
+
+                var tokenDescriptor = new SecurityTokenDescriptor()
                 {
-                    new Claim(ClaimTypes.Name,user.UserName)
-                }),
-                Expires = DateTime.UtcNow.AddHours(30),
-                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key)
-, SecurityAlgorithms.HmacSha256Signature)
-            };
-            var token = tokenHandler.CreateToken(tokenDescritor);
-            user.Token=tokenHandler.WriteToken(token);
-            user.Password = "";
+                    Subject = new ClaimsIdentity(new Claim[]
+                  {
+            new Claim(ClaimTypes.Name,applicationUser.Id),
+            new Claim(ClaimTypes.Email,applicationUser.Email),
+            new Claim(ClaimTypes.Role,applicationUser.Role)
+                  }),
+                    Expires = DateTime.UtcNow.AddHours(30),
+                    SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key),
+                  SecurityAlgorithms.HmacSha256Signature)
+                };
+
+                var token = tokenHandler.CreateToken(tokenDescriptor);
+                applicationUser.Token = tokenHandler.WriteToken(token);
+                return applicationUser;
+            }
+            else
+                return null;
+
+            //            var user = _context.Users.FirstOrDefault(u => u.UserName == loginVM.UserName && u.Password == loginVM.Password);
+            //            if (user == null)
+            //                return null;
+            //            var tokenHandler = new JwtSecurityTokenHandler();
+            //            var key = Encoding.ASCII.GetBytes(_appSettings.Secret);
+            //            var tokenDescritor = new SecurityTokenDescriptor()
+            //            {
+            //                Subject = new ClaimsIdentity(new Claim[]
+            //                {
+            //                    new Claim(ClaimTypes.Name,user.UserName)
+            //                }),
+            //                Expires = DateTime.UtcNow.AddHours(30),
+            //                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key)
+            //, SecurityAlgorithms.HmacSha256Signature)
+            //            };
+            //            var token = tokenHandler.CreateToken(tokenDescritor);
+            //            user.Token=tokenHandler.WriteToken(token);
+            //            user.Password = "";
 
 
-            return Ok(user);
+            //            return Ok(user);
 
         }
 

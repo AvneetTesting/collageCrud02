@@ -16,7 +16,6 @@ namespace CollageAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
     public class TeachersController : ControllerBase
     {
         private readonly IdentityApplicationDbContext _context;
@@ -29,6 +28,8 @@ namespace CollageAPI.Controllers
         /// GetAll method is used to get the list of the Teachers
         /// </summary>
         /// <returns></returns>
+        //[Authorize(Roles = "Admin")]
+        [Authorize(Roles = "admin")]
         [HttpGet]
         public IActionResult GetAll()
         {
